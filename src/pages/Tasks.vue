@@ -4,7 +4,7 @@
       <router-link class="Today Button" :to="{ name: 'Today' }"
         ><div class="calender-icon-container">
           <i class="fa-solid fa-calendar icon"></i>
-          <span class="day-count">30</span>
+          <span class="day-count">31</span>
         </div>
         Today</router-link
       >
@@ -282,10 +282,10 @@ export default {
   opacity: 0.3;
 }
 .day-count {
-  margin-top: 14.2px;
+  margin-top: 14.4px;
   color: white;
   font-size: 8.7px;
-  margin-left: -18px;
+  margin-left: -17.55px;
   position: absolute;
 }
 .week {

@@ -133,7 +133,7 @@
       <div class="modal-section">
         <div class="modal-section-top">
           <form @submit="editTodo">
-            <input type="text" v-model="editInput" class="editInput" />
+            <input type="text" v-model="editInput" placeholder="Task" class="editInput" />
           </form>
           <i class="fa-solid fa-bars wm-modal-bar-icon"></i>
         </div>
@@ -201,7 +201,7 @@ export default {
       editedTaskText: null,
       editedTaskDate: null,
       editedTaskDescripton: null,
-      descriptonInput: "",
+      descriptonInput: "descripton",
       editDate: "Due Date",
       inputDate: "2023-07-01 Today",
       dontShow: false,
@@ -225,7 +225,7 @@ export default {
         this.todos.push({
           text: this.inputVal,
           Date: this.inputDate,
-          descripton: this.descriptonInput,
+          descripton: "",
           complete: false,
         });
       }
@@ -765,8 +765,8 @@ export default {
   outline: none;
   width: 94%;
   margin-left: 20px;
-  font-size: 16px;
-  color: rgb(0, 0, 0);
+  font-size: 14px;
+  color: gray;
   border: none;
   box-sizing: border-box;
   background-color: white;
