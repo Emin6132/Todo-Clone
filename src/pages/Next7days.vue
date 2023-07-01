@@ -40,11 +40,14 @@
       </div>
       <div class="footer">
         <div class="footer-in">
-          <input
-            type="text"
-            class="input"
-            placeholder='+ Add task to "Inbox" on "Today"'
-          />
+          <form class="form" @submit="addTodo">
+            <input
+              type="text"
+              class="input"
+              v-model="inputVal"
+              placeholder='+ Add task to "Inbox" on "Today"'
+            />
+          </form>
           <div class="footer-bg" v-show="restBgshow">
             <img
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR76n9pV6HgwGb28pByJXkUKDRDNqBHxjYRuw&usqp=CAU"
@@ -59,7 +62,6 @@
           <div class="todo-list">
             <div
               class="todo-list-item"
-              @click="editTask(index)"
               :key="index"
               v-for="(todo, index) in filteredTodos"
             >
@@ -70,6 +72,7 @@
               />
               <div class="border-bottom">
                 <div
+                  @click="editTask(index)"
                   :class="[
                     todo.complete ? 'completed' : 'todo-list-item-content',
                   ]"

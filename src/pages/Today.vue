@@ -47,6 +47,18 @@
               v-model="inputVal"
               placeholder='+ Add task to "Inbox" on "Today"'
             />
+            <div class="input-calendar-container">
+              <div class="input-calendar-container-in">
+                <i class="fa-solid fa-calendar-days input-calendar-icon"></i>
+                <input type="text" class="view-date" v-model="inputDate" />
+                <input
+                  type="date"
+                  class="input-select-date"
+                  v-model="inputDate"
+                />
+              </div>
+            </div>
+            <button v-show="dontShow" @click="addTodo"></button>
           </form>
           <div class="footer-bg" v-show="restBgshow">
             <img
@@ -61,7 +73,6 @@
           <div class="todo-list">
             <div
               class="todo-list-item"
-              @click="editTask(index)"
               :key="index"
               v-for="(todo, index) in filteredTodos"
             >
@@ -72,12 +83,15 @@
               />
               <div class="border-bottom">
                 <div
+                  @click="editTask(index)"
                   :class="[
                     todo.complete ? 'completed' : 'todo-list-item-content',
                   ]"
                 >
                   {{ todo.text }}
                 </div>
+                <div v-show="dontShow">{{ todo.Date }}</div>
+                <div v-show="dontShow">{{ todo.descripton }}</div>
                 <button class="task-button" @click="deleteTodo(index)">
                   Delete
                 </button>
@@ -101,10 +115,11 @@
             <div class="modal-checkbox-span">
               <input type="checkbox" class="modal-checkbox" />
             </div>
-            <div class="calender">
-              <i class="fa-regular fa-calendar-days calender-icon"></i>
-              <span class="calender-text">Due Date</span>
-            </div>
+            <form class="calendar-container" @submit="editTodo">
+              <i class="fa-solid fa-calendar-days calendar-icon"></i>
+              <input type="text" class="view-date" v-model="editDate" />
+              <input type="date" class="select-date" v-model="editDate" />
+            </form>
           </div>
           <div>
             <i class="fa-solid fa-flag"></i>
@@ -122,12 +137,14 @@
           </form>
           <i class="fa-solid fa-bars wm-modal-bar-icon"></i>
         </div>
-        <input
-          type="text"
-          v-model="descripton"
-          placeholder="Descripton"
-          class="descriptonInput"
-        />
+        <form @submit="editTodo">
+          <input
+            type="text"
+            v-model="descriptonInput"
+            placeholder="Descripton"
+            class="descriptonInput"
+          />
+        </form>
       </div>
       <div class="modal-footer">
         <div class="modal-footer-left">
@@ -181,8 +198,13 @@ export default {
       openOptions: false,
       modalActive: false,
       show: false,
-      editedTask: null,
-      descripton: "",
+      editedTaskText: null,
+      editedTaskDate: null,
+      editedTaskDescripton: null,
+      descriptonInput: "",
+      editDate: "Due Date",
+      inputDate: "2023-07-01 Today",
+      dontShow: false,
     };
   },
   watch: {
@@ -198,21 +220,30 @@ export default {
     },
   },
   methods: {
-    addTodo(e) {
-      e.preventDefault();
+    addTodo() {
       if (this.inputVal) {
         this.todos.push({
           text: this.inputVal,
+          Date: this.inputDate,
+          descripton: this.descriptonInput,
           complete: false,
         });
       }
       this.inputVal = "";
+      this.inputDate = "2023-07-01 Today";
     },
-    editTodo(e) {
-      e.preventDefault();
-      if (this.editedTask != null) {
-        this.todos[this.editedTask].text = this.editInput;
-        this.editedTask = null;
+    editTodo() {
+      if (this.editedTaskText != null) {
+        this.todos[this.editedTaskText].text = this.editInput;
+        this.editedTaskText = null;
+      }
+      if (this.editedTaskDate != null) {
+        this.todos[this.editedTaskDate].Date = this.editDate;
+        this.editedTaskDate = null;
+      }
+      if (this.editedTaskDescripton != null) {
+        this.todos[this.editedTaskDescripton].descripton = this.descriptonInput;
+        this.editedTaskDescripton = null;
       }
 
       this.editInput = "";
@@ -226,10 +257,18 @@ export default {
     },
     deleteTodo(index) {
       this.todos.splice(index, 1);
+
+      this.modalActive = false;
     },
     editTask(index) {
       this.editInput = this.todos[index].text;
-      this.editedTask = index;
+      this.editedTaskText = index;
+
+      this.editDate = this.todos[index].Date;
+      this.editedTaskDate = index;
+
+      this.descriptonInput = this.todos[index].descripton;
+      this.editedTaskDescripton = index;
 
       this.modalActive = true;
     },
@@ -296,13 +335,15 @@ export default {
   padding: 0px 0px 0px 20px;
 }
 .input {
-  outline: none;
   padding: 0px 0px 0px 20px;
   border-radius: 5px;
   height: 40px;
   width: 97.2%;
   background-color: rgba(211, 211, 211, 0.308);
   border: none;
+}
+.input:focus {
+  outline: 1.5px solid rgb(0, 174, 255);
 }
 ::placeholder {
   font-size: 15px;
@@ -401,26 +442,92 @@ export default {
 .modal-footer {
   display: flex;
 }
-.calender {
-  padding: 0px 6px 0px 6px;
+.calendar-container {
+  margin-left: 24%;
+  justify-content: center;
   align-items: center;
-  height: 24px;
-  cursor: pointer;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  height: 32px;
+  position: relative;
   display: flex;
 }
-.calender:hover {
-  background-color: rgba(211, 211, 211, 0.363);
+.input-calendar-container {
+  width: 131px;
+  margin-left: 49%;
+  position: absolute;
 }
-.calender-icon {
-  padding: 3px 6px 3px 4px;
+.input-calendar-container-in {
+  margin-left: 24%;
+  justify-content: center;
+  align-items: center;
+  height: 32px;
+  position: relative;
+  display: flex;
+}
+.calendar-container:hover {
+  .view-date {
+    background-color: rgba(211, 211, 211, 0.63);
+  }
+  .calendar-icon {
+    background-color: rgba(211, 211, 211, 0.63);
+  }
+}
+.select-date {
+  margin-left: -135%;
+  z-index: 2;
+  opacity: 0;
+  border: none;
+  position: absolute;
+  height: 30px;
+  width: 18px;
+}
+.input-select-date {
+  margin-left: -140%;
+  z-index: 2;
+  opacity: 0;
+  border: none;
+  position: absolute;
+  height: 30px;
+  width: 18px;
+}
+.view-date {
+  display: flex;
+  align-items: center;
+  outline: none;
+  background: none;
+  border: none;
+  padding: 3px 0px 0px 0px;
+  height: 29px;
+  width: 110px;
+}
+.calendar-icon {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  color: gray;
+  z-index: 1;
+  margin-left: -100%;
+  width: 34px;
+  margin-right: 34px;
+  position: absolute;
+}
+.input-calendar-icon {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+  height: 32px;
+  color: gray;
+  z-index: 1;
+  margin-left: -100%;
+  width: 34px;
+  margin-right: 44px;
+  position: absolute;
 }
 .modal-checkbox-span {
-  padding: 0px 0px 0px 4px;
+  padding: 0px 8px 0px 4px;
   display: flex;
   align-items: center;
-  margin-right: 6px;
+  margin-right: 2px;
   width: 30px;
   border-right: 1px solid rgba(211, 211, 211, 0.548);
 }
@@ -666,5 +773,10 @@ export default {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-weight: inherit;
+}
+.form {
+  width: 100%;
+  align-items: center;
+  display: flex;
 }
 </style>

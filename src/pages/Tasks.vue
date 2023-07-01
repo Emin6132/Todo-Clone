@@ -4,7 +4,7 @@
       <router-link class="Today Button" :to="{ name: 'Today' }"
         ><div class="calender-icon-container">
           <i class="fa-solid fa-calendar icon"></i>
-          <span class="day-count">14</span>
+          <span class="day-count">30</span>
         </div>
         Today</router-link
       >
@@ -53,8 +53,7 @@
               </div>
               Lists
             </span>
-            <i class="fa-solid fa-plus add-new-icon" v-show="listsIconShow"></i
-          ></span>
+          </span>
           <span class="information-text" v-show="!listsOpen"
             >Use lists to categorize and <br />
             manage your tasks and notes</span
@@ -87,8 +86,7 @@
               </div>
               Tags
             </span>
-            <i class="fa-solid fa-plus add-new-icon" v-show="tagsIconShow"></i
-          ></span>
+          </span>
           <span class="information-text" v-show="!tagsOpen"
             >Categroize your tasks with <br />
             tags.Quickly select a tag by <br />
@@ -122,11 +120,7 @@
               </div>
               Filters
             </span>
-            <i
-              class="fa-solid fa-plus add-new-icon"
-              v-show="filtersIconShow"
-            ></i
-          ></span>
+          </span>
           <span class="information-text" v-show="!filtersOpen"
             >Display tasks filtered by list, date, priotiry, tag, and more</span
           >
@@ -227,7 +221,7 @@ export default {
   font-size: 11px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  padding: 0px 10px 10px 20px;
+  padding: 0px 10px 10px 10px;
   display: flex;
   flex-direction: column;
   width: 91%;
@@ -288,20 +282,20 @@ export default {
   opacity: 0.3;
 }
 .day-count {
-  margin-top: 15px;
+  margin-top: 14.2px;
   color: white;
   font-size: 8.7px;
-  margin-left: -17.5px;
+  margin-left: -18px;
   position: absolute;
 }
 .week {
-  margin-top: 13px;
+  margin-top: 12px;
   color: white;
   font-size: 11.5px;
   margin-left: -17px;
   position: absolute;
 }
-a.router-link-active{
+a.router-link-active {
   border-radius: 2px;
   background-color: rgba(201, 230, 243, 0.336);
 }
