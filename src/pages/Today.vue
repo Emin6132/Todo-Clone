@@ -133,7 +133,12 @@
       <div class="modal-section">
         <div class="modal-section-top">
           <form @submit="editTodo">
-            <input type="text" v-model="editInput" placeholder="Task" class="editInput" />
+            <input
+              type="text"
+              v-model="editInput"
+              placeholder="Task"
+              class="editInput"
+            />
           </form>
           <i class="fa-solid fa-bars wm-modal-bar-icon"></i>
         </div>
